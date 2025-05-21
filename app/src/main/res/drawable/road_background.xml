@@ -1,0 +1,39 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- רקע כללי אפור כהה (כביש) -->
+    <item android:drawable="@android:color/darker_gray" />
+
+    <!-- קווים אנכיים בין נתיבים -->
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="2dp" />
+            <solid android:color="@android:color/white" />
+        </shape>
+        <left>20%</left>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="2dp" />
+            <solid android:color="@android:color/white" />
+        </shape>
+        <left>40%</left>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="2dp" />
+            <solid android:color="@android:color/white" />
+        </shape>
+        <left>60%</left>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="2dp" />
+            <solid android:color="@android:color/white" />
+        </shape>
+        <left>80%</left>
+    </item>
+
+</layer-list>
