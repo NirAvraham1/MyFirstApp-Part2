@@ -39,16 +39,27 @@ This is a Kotlin-based Android game where the player must avoid falling obstacle
 ## 🗂 Project Structure
 
 ├── MainActivity.kt                // Core gameplay logic
+
 ├── MenuActivity.kt               // Game mode selector
+
 ├── HighScoresActivity.kt         // RecyclerView + embedded map
+
 ├── MapActivity.kt                // Full-screen map view
+
 ├── GameLogic.kt                  // Matrix-based game logic
+
 ├── HighScoreManager.kt           // Manages score list (with JSON persistence)
+
 ├── SharedPreferencesManagerV3.kt// Singleton for data storage (as taught in class)
+
 ├── SignalManager.kt              // Vibration and toast utilities
+
 ├── SensorMovementController.kt  // Manages accelerometer control
+
 ├── res/layout/…                  // All XML UIs
+
 └── res/drawable/…                // All icons and assets
+
 
 ## ⚙️ Setup Instructions
 
@@ -59,7 +70,13 @@ This is a Kotlin-based Android game where the player must avoid falling obstacle
        android:name="com.google.android.geo.API_KEY"
        android:value="YOUR_API_KEY_HERE" />
 
-  and to the google_maps_api.xml
+  and to the 'google_maps_api.xml':
+    <resources>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+       API KEY HERE
+    </string>
+</resources>
+
 
 3. Run the app on a device or emulator.
 4. Allow location permission when prompted.
