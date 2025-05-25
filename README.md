@@ -11,7 +11,7 @@ This is a Kotlin-based Android game where the player must avoid falling obstacle
 
 ## 🚀 Features
 
-- 🎮 **3-column endless runner gameplay**
+- 🎮 **5-column endless runner gameplay**
 - 👆 **Button and tilt (sensor) controls**
 - 🪙 **Coin collection and scoring system**
 - 💓 **Lives system with vibration and sound feedback**
