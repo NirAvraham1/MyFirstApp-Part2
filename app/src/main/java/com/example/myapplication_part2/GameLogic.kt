@@ -37,26 +37,24 @@ object GameLogic {
     }
 
     fun tick(): Boolean {
-        // הזזת השורות למטה
         for (i in ROWS - 1 downTo 1) {
             board[i] = board[i - 1].copyOf()
         }
 
-        // שורה חדשה עליונה ריקה
         board[0] = IntArray(COLS) { generateRandomObject() }
 
         meters++
 
-        // בדיקת התנגשות
+
         return checkCrash()
     }
 
     private fun generateRandomObject(): Int {
         val chance = (1..100).random()
         return when {
-            chance <= 10 -> 1 // מכשול
-            chance <= 20 -> 2 // מטבע
-            else -> 0 // ריק
+            chance <= 10 -> 1
+            chance <= 20 -> 2
+            else -> 0
         }
     }
 

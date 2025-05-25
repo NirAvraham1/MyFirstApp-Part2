@@ -21,18 +21,18 @@ class HighScoreAdapter(
 
     override fun onBindViewHolder(holder: HighScoreViewHolder, position: Int) {
         val score = scores[position]
-        holder.nameText.text = "Player: ${score.playerName}"
-        holder.scoreText.text = "Score: ${score.totalScore}"
-        holder.modeText.text = "Mode: ${score.mode}"
+        holder.nameText.text = holder.itemView.context.getString(R.string.player_name_format, score.playerName)
+        holder.scoreText.text = holder.itemView.context.getString(R.string.score_format, score.totalScore)
+        holder.modeText.text = holder.itemView.context.getString(R.string.mode_format, score.mode)
 
 
 
-        // לחיצה על השורה תעדכן את המפה הקטנה
+
+
         holder.itemView.setOnClickListener {
             listener.onHighScoreSelected(score.latitude, score.longitude)
         }
 
-        // לחיצה על כפתור מיקום תפתח את המסך המלא
         holder.btnLocation.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, MapActivity::class.java)

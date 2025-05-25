@@ -1,6 +1,7 @@
 package com.example.myapplication_part2
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,7 @@ class HighScoresActivity : AppCompatActivity(), OnHighScoreSelectedListener, OnM
         val location = if (scores.isNotEmpty() && scores.first().latitude != 0.0 && scores.first().longitude != 0.0) {
             LatLng(scores.first().latitude, scores.first().longitude)
         } else {
+            Log.d("DEBUG_MAP", "Using default location")
             defaultLocation
         }
 
@@ -55,9 +57,9 @@ class HighScoresActivity : AppCompatActivity(), OnHighScoreSelectedListener, OnM
     }
 
 
-    override fun onHighScoreSelected(lat: Double, lon: Double) {
+    override fun onHighScoreSelected(latitude: Double, longitude: Double) {
         if (mapReady) {
-            updateMap(lat, lon)
+            updateMap(latitude, longitude)
         }
     }
 

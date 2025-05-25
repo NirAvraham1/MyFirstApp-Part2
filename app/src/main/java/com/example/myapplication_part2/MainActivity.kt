@@ -8,10 +8,10 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.example.myapplication_part2.utilities.SignalManager
 
 class MainActivity : AppCompatActivity(), SensorMovementListener {
 
@@ -41,22 +41,12 @@ class MainActivity : AppCompatActivity(), SensorMovementListener {
     private var sensorController: SensorMovementController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        SignalManager.init(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) ==
-            android.content.pm.PackageManager.PERMISSION_GRANTED) {
-
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    playerLat = location.latitude
-                    playerLon = location.longitude
-                }
-            }
-        }
-
+        playerLat = intent.getDoubleExtra("lat", 32.114121)
+        playerLon = intent.getDoubleExtra("lon", 34.817744)
 
         val mode = intent.getStringExtra("mode") ?: "slow"
         tickDelay = when (mode) {
@@ -140,9 +130,7 @@ class MainActivity : AppCompatActivity(), SensorMovementListener {
             endButtonsLayout.visibility = View.GONE
             logic.resetGame()
             gameRunning = true
-            grid.post {
-                updateUI()
-            }
+            grid.post { updateUI() }
             if (sensorMode) {
                 sensorController?.start()
             } else {
@@ -150,7 +138,6 @@ class MainActivity : AppCompatActivity(), SensorMovementListener {
                 rightBtn.visibility = View.VISIBLE
             }
             startGameLoop()
-
         }
 
         menuBtn.setOnClickListener {
@@ -161,28 +148,6 @@ class MainActivity : AppCompatActivity(), SensorMovementListener {
         }
 
         updateUI()
-    }
-
-    override fun onMoveLeft() {
-        if (!gameRunning) return
-        val crashed = logic.moveRight()
-        if (crashed) vibrateAndToast("Crash!")
-        runOnUiThread { updateUI() }
-    }
-
-    override fun onMoveRight() {
-        if (!gameRunning) return
-        val crashed = logic.moveLeft()
-        if (crashed) vibrateAndToast("Crash!")
-        runOnUiThread { updateUI() }
-    }
-
-    override fun onTiltForward() {
-        tickDelay = (tickDelay - 200).coerceAtLeast(200)
-    }
-
-    override fun onTiltBackward() {
-        tickDelay = (tickDelay + 200).coerceAtMost(2000)
     }
 
     private fun startGameLoop() {
@@ -342,7 +307,8 @@ class MainActivity : AppCompatActivity(), SensorMovementListener {
     }
 
     private fun vibrateAndToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        SignalManager.getInstance().toast(message)
+        SignalManager.getInstance().vibrate()
         crashSound?.let {
             if (it.isPlaying) {
                 it.pause()
@@ -350,25 +316,28 @@ class MainActivity : AppCompatActivity(), SensorMovementListener {
             }
             it.start()
         }
-        try {
-            val vibrator = getSystemService(VIBRATOR_SERVICE) as android.os.Vibrator
-            vibrator.vibrate(100)
-        } catch (_: SecurityException) {}
     }
 
+    override fun onMoveLeft() {
+        if (!gameRunning) return
+        val crashed = logic.moveRight()
+        if (crashed) vibrateAndToast("Crash!")
+        runOnUiThread { updateUI() }
+    }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    override fun onMoveRight() {
+        if (!gameRunning) return
+        val crashed = logic.moveLeft()
+        if (crashed) vibrateAndToast("Crash!")
+        runOnUiThread { updateUI() }
+    }
 
-        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
-        }
+    override fun onTiltForward() {
+        tickDelay = (tickDelay - 200).coerceAtLeast(200)
+    }
+
+    override fun onTiltBackward() {
+        tickDelay = (tickDelay + 200).coerceAtMost(2000)
     }
 
     override fun onDestroy() {
