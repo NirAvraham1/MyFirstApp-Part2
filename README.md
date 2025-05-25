@@ -70,14 +70,7 @@ This is a Kotlin-based Android game where the player must avoid falling obstacle
        android:name="com.google.android.geo.API_KEY"
        android:value="YOUR_API_KEY_HERE" />
 
-  and to the 'google_maps_api.xml':
-    <resources>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-       API KEY HERE
-    </string>
-</resources>
-
-
+  and to the google_maps_api.xml
 3. Run the app on a device or emulator.
 4. Allow location permission when prompted.
 
